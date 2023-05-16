@@ -51,7 +51,7 @@ export default defineConfig({
     proxy: {
       '/api': {
         // target: 'http://8.130.22.229:8086/lh.com/',
-        target:'http://localhost:8088/lh.com',
+        target:'http://localhost:8086/lh.com',
         changeOrigin: true,
         rewrite: (path) => {
           console.log(path);
