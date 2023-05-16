@@ -26,22 +26,22 @@ export default defineConfig({
     'process.env': process.env
   },
   // 打包配置
-  // build: {
-  //   // target: 'modules',
-  //   // outDir: "../webapp/",
-  //   brotliSize:false,
-  //   chunkSizeWarningLimit: 1500,
-  //   emptyOutDir:false,
-  //   rollupOptions: {
-  //     output: {
-  //       manualChunks(id) {
-  //         if (id.includes('node_modules')) {
-  //           return id.toString().split('node_modules')[1].split('/')[0].toString();
-  //         }
-  //       }
-  //     }
-  //   }
-  // },
+  build: {
+    // target: 'modules',
+    // outDir: "../webapp/",
+    brotliSize:false,
+    chunkSizeWarningLimit: 1500,
+    emptyOutDir:false,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            return id.toString().split('node_modules')[1].split('/')[0].toString();
+          }
+        }
+      }
+    }
+  },
   //本地服务
   server: {
     port:80,//端口
