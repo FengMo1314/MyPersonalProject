@@ -1,4 +1,4 @@
 #!/bin/bash
-cd /home/webuser/MyProject
+cd /home/webuser/MyProject/springboot
 npm run build
-mv ./dist /home/webuser
+mv dist /home/webuser
