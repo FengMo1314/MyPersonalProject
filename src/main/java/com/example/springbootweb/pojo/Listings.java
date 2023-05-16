@@ -1,0 +1,86 @@
+package com.example.springbootweb.pojo;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Listings {
+    private String id;
+    private String listing_url;
+    private String scrape_id;
+    private String last_scraped;
+    private String source;
+    private String name;
+    private String description;
+    private String neighborhood_overview;
+    private String picture_url;
+    private String host_id;
+    private String host_url;
+    private String host_name;
+    private String host_since;
+    private String host_location;
+    private String host_about;
+    private String host_response_time;
+    private String host_response_rate;
+    private String host_acceptance_rate;
+    private String host_is_superhost;
+    private String host_thumbnail_url;
+    private String host_picture_url;
+    private String host_neighbourhood;
+    private String host_listings_count;
+    private String host_total_listings_count;
+    private String host_verifications;
+    private String host_has_profile_pic;
+    private String host_identity_verified;
+    private String neighbourhood;
+    private String neighbourhood_cleansed;
+    private String neighbourhood_group_cleansed;
+    private String latitude;
+    private String longitude;
+    private String property_type;
+    private String room_type;
+    private String accommodates;
+    private String bathrooms;
+    private String bathrooms_text;
+    private String bedrooms;
+    private String beds;
+    private String amenities;
+    private String price;
+    private String minimum_nights;
+    private String maximum_nights;
+    private String minimum_minimum_nights;
+    private String maximum_minimum_nights;
+    private String minimum_maximum_nights;
+    private String maximum_maximum_nights;
+    private String minimum_nights_avg_ntm;
+    private String maximum_nights_avg_ntm;
+    private String calendar_updated;
+    private String has_availability;
+    private String availability_30;
+    private String availability_60;
+    private String availability_90;
+    private String availability_365;
+    private String calendar_last_scraped;
+    private String number_of_reviews;
+    private String number_of_reviews_ltm;
+    private String number_of_reviews_l30d;
+    private String first_review;
+    private String last_review;
+    private String review_scores_rating;
+    private String review_scores_accuracy;
+    private String review_scores_cleanliness;
+    private String review_scores_checkin;
+    private String review_scores_communication;
+    private String review_scores_location;
+    private String review_scores_value;
+    private String license;
+    private String instant_bookable;
+    private String calculated_host_listings_count;
+    private String calculated_host_listings_count_entire_homes;
+    private String calculated_host_listings_count_private_rooms;
+    private String calculated_host_listings_count_shared_rooms;
+    private String reviews_per_month;
+}

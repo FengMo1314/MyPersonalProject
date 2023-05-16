@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace对应mapper接口所在的位置-->
+<mapper namespace="com.example.springbootweb.dao.UsersDao">
+    <sql id="fishId">
+        ALTER TABLE `lh_users`
+            DROP `id`;
+        ALTER TABLE `lh_users`
+            ADD `id` MEDIUMINT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT FIRST;
+    </sql>
+    <sql id="someNoId">
+        username,password,email,phone,type
+    </sql>
+    <sql id="selectAll">
+        SELECT id, username, `password`, email, phone, type
+        FROM lh_users
+    </sql>
+
+
+    <select id="getAllUsers" resultType="com.example.springbootweb.pojo.Users">
+        <include refid="selectAll"/>
+    </select>
+    <select id="getUserByUName" resultType="com.example.springbootweb.pojo.Users">
+        <include refid="selectAll"/>
+        <if test="users.username!=null and users.username!=''">
+            WHERE username=#{users.username}
+        </if>
+    </select>
+    <select id="fishUsersId">
+        <include refid="fishId"/>
+    </select>
+    <select id="getUserByUId" resultType="com.example.springbootweb.pojo.Users">
+        <include refid="selectAll"/>
+        <if test="users.id!=null and users.id!=''">
+            WHERE id=#{users.id}
+        </if>
+    </select>
+    <insert id="addUser">
+        INSERT INTO
+        lh_users
+        (
+        <if test="users.username!=null and users.username!=''">
+            username,
+        </if>
+        <if test="users.password!=null and users.password!=''">
+            password,
+        </if>
+        <if test="users.email!='' and users.email!=null">
+            email,
+        </if>
+        <if test="users.phone!='' and users.phone!=null">
+            phone,
+        </if>
+        <if test="users.type!='' and users.type!=null">
+            type
+        </if>)
+        VALUES
+        (
+        <if test="users.username!=null and users.username!=''">
+            #{users.username},
+        </if>
+        <if test="users.password!=null and users.password!=''">
+            #{users.password},
+        </if>
+        <if test="users.email!='' and users.email!=null">
+            #{users.email},
+        </if>
+        <if test="users.phone!='' and users.phone!=null">
+            #{users.phone},
+        </if>
+        <if test="users.type!='' and users.type!=null">
+            #{users.type}
+        </if>)
+    </insert>
+    <insert id="addUsers" parameterType="list">
+        INSERT lh_users (username, password,email,phone,type) VALUES
+        <foreach collection="usersList" item="items" separator="," index="">
+            (#{items.username},#{items.password},#{items.email},#{items.phone},#{items.type})
+        </foreach>
+    </insert>
+    <delete id="deleteUserById">
+        DELETE
+        FROM lh_users
+        WHERE id = #{users.id}
+        LIMIT 1
+    </delete>
+    <delete id="deleteUserByIds">
+        DELETE FROM lh_users WHERE id IN
+        <foreach collection="ids" item="items" open="(" separator="," close=")">
+            #{items}
+        </foreach>
+    </delete>
+    <update id="updataUserById">
+        UPDATE lh_users
+        SET `username`=#{users.username},
+            `password`=#{users.password},
+            `email`=#{users.email},
+            `phone`=#{users.phone},
+            `type`=#{users.type}
+        WHERE `id` = #{users.id}
+    </update>
+    <update id="updataUserByIds">
+        UPDATE lh_users SET username,`password`,email,phone,type
+        WHERE id IN
+        <foreach collection="ids" item="items" open="(" separator="," close=")">
+            #{items}
+        </foreach>
+    </update>
+</mapper>

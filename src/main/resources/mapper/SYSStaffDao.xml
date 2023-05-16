@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace对应mapper接口所在的位置-->
+<mapper namespace="com.example.springbootweb.dao.SYSStaffDao">
+
+    <sql id="fishId">
+        ALTER TABLE `sys_staff`
+            DROP `staff_id`;
+        ALTER TABLE `sys_user`
+            ADD `staff_id` MEDIUMINT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT FIRST;
+    </sql>
+    <sql id="someNoId">
+        staff_name, login_name, 'password', phone, email, dept_id, 'role', is_valid, create_date, create_staff_id
+    </sql>
+    <sql id="selectAll">
+        SELECT staff_id, staff_name, login_name, password, phone, email, dept_id, role, is_valid, create_date, create_staff_id
+        FROM sys_staff
+    </sql>
+
+    <select id="getAllUsers" resultType="com.example.springbootweb.pojo.SYSStaff">
+        <include refid="selectAll"/>
+    </select>
+    <select id="getUserByUName" resultType="com.example.springbootweb.pojo.SYSStaff">
+        <include refid="selectAll"/>
+        <if test="users.staff_name!=null and users.staff_name!=''">
+            WHERE staff_name=#{users.staff_name}
+        </if>
+    </select>
+    <select id="fishUsersId">
+        <include refid="fishId"/>
+    </select>
+    <select id="getUserByUId" resultType="com.example.springbootweb.pojo.SYSStaff">
+        <include refid="selectAll"/>
+        <if test="users.staff_id!=null and users.staff_id!=''">
+            WHERE staff_id=#{users.staff_id}
+        </if>
+    </select>
+    <select id="getUserByLName" resultType="com.example.springbootweb.pojo.SYSStaff">
+        <include refid="selectAll"/>
+        WHERE login_name=#{users.login_name}
+    </select>
+    <insert id="addUser">
+        INSERT INTO sys_staff(
+          staff_id,
+        <if test="users.user_name!=null and users.user_name!=''">
+            staff_name,
+        </if>
+        <if test="users.login_name!='' and users.login_name!=null">
+            login_name,
+        </if>
+        <if test="users.password!='' and users.password!=null">
+            password,
+        </if>
+        <if test="users.phone!='' and users.phone!=null">
+            phone,
+        </if>
+        <if test="users.email!=null and users.email!=''">
+            email,
+        </if>
+        <if test="users.dept_id!=null and users.dept_id!=''">
+            dept_id,
+        </if>
+        <if test="users.role!=null and users.role!=''">
+            role,
+        </if>
+        <if test="users.is_valid!='' and users.is_valid!=null">
+            is_valid,
+        </if>
+            create_date,
+        <if test="users.create_staff_id!=null and users.create_staff_id!=''">
+            create_staff_id
+        </if>) VALUES (,
+        <if test="users.staff_name!=null and users.staff_name!=''">
+            #{users.staff_name},
+        </if>
+        <if test="users.login_name!='' and users.login_name!=null">
+            #{users.login_name},
+        </if>
+        <if test="users.password!='' and users.password!=null">
+           #{ users.password},
+        </if>
+        <if test="users.phone!='' and users.phone!=null">
+            #{users.phone},
+        </if>
+        <if test="users.email!=null and users.email!=''">
+            #{users.email},
+        </if>
+        <if test="users.dept_id!=null and users.dept_id!=''">
+            #{users.dept_id},
+        </if>
+        <if test="users.role!=null and users.role!=''">
+            #{users.role},
+        </if>
+        <if test="users.is_valid!=null and users.is_valid!=''">
+            #{users.is_valid},
+        </if>
+
+            #{users.create_date},
+        <if test="users.create_staff_id!=null and users.create_staff_id!=''">
+            #{users.create_staff_id}
+        </if>
+        )
+    </insert>
+    <insert id="addUsers" parameterType="list">
+        INSERT sys_staff (staff_id, staff_name, login_name, password, phone, email, dept_id, role, is_valid, create_date, create_staff_id) VALUES
+        <foreach collection="usersList" item="items" separator="," index="">
+            (#{items.staff_id}, #{items.staff_name}, #{items.login_name}, #{items.password}, #{items.phone}, #{items.email}, #{items.dept_id}, #{items.role}, #{items.is_valid}, #{items.create_date}, #{items.create_staff_id})
+        </foreach>
+    </insert>
+    <delete id="deleteUserById">
+        DELETE
+        FROM sys_staff
+        WHERE staff_id = #{users.staff_id}
+        LIMIT 1
+    </delete>
+    <delete id="deleteUserByIds">
+        DELETE FROM sys_staff WHERE sys_staff.staff_id IN
+        <foreach collection="ids" item="items" open="(" separator="," close=")">
+            #{items}
+        </foreach>
+    </delete>
+    <update id="updataUserById">
+        UPDATE sys_staff
+        SET login_name=#{users.login_name},
+            is_valid =#{users.is_valid},
+            phone=#{users.phone},
+            password=#{users.password},
+            create_date=#{users.create_date},
+            create_staff_id=#{users.create_staff_id},
+            dept_id=#{users.dept_id},
+            email=#{users.email},
+            role=#{users.role},
+            staff_name=#{users.staff_name}
+        WHERE staff_id=#{users.staff_id}
+    </update>
+    <update id="updataUserByIds">
+        UPDATE lh_users SET staff_id, staff_name, login_name, password, phone, email, dept_id, role, is_valid, create_date, create_staff_id
+        WHERE id IN
+        <foreach collection="ids" item="items" open="(" separator="," close=")">
+            #{items}
+        </foreach>
+    </update>
+</mapper>
+    

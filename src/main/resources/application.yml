@@ -1,0 +1,11 @@
+server:
+  servlet:
+    context-path: /lh.com
+  port: 8088
+spring:
+  profiles:
+    include: jdbc,mybatis
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+

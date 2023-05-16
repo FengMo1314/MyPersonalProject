@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace对应mapper接口所在的位置-->
+<mapper namespace="com.example.springbootweb.dao.SYSUserDao">
+    <sql id="fishId">
+        ALTER TABLE `sys_user`
+            DROP `user_id`;
+        ALTER TABLE `sys_user`
+            ADD `user_id` MEDIUMINT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT FIRST;
+    </sql>
+    <sql id="someNoId">
+        user_name, login_name, 'password', phone, address, is_valid, regist_date
+    </sql>
+    <sql id="selectAll">
+        SELECT user_id,
+               user_name,
+               login_name,
+               password,
+               phone,
+               address,
+               is_valid,
+               regist_date
+        FROM sys_user
+    </sql>
+
+    <select id="getAllUsers" resultType="com.example.springbootweb.pojo.SYSUser">
+        <include refid="selectAll"/>
+    </select>
+    <select id="getUserByUName" resultType="com.example.springbootweb.pojo.SYSUser">
+        <include refid="selectAll"/>
+        <if test="users.username!=null and users.username!=''">
+            WHERE user_name=#{users.userName}
+        </if>
+    </select>
+    <select id="fishUsersId">
+        <include refid="fishId"/>
+    </select>
+    <select id="getUserByUId" resultType="com.example.springbootweb.pojo.SYSUser">
+        <include refid="selectAll"/>
+        <if test="users.id!=null and users.id!=''">
+            WHERE user_id=#{users.userId}
+        </if>
+    </select>
+    <select id="getUserByLName" resultType="com.example.springbootweb.pojo.SYSUser">
+        <include refid="selectAll"/>
+        WHERE login_name=#{users.login_name}
+    </select>
+    <insert id="addUser">
+        INSERT INTO sys_user
+        (
+        <if test="users.user_name!=null and users.user_name!=''">
+            user_name,
+        </if>
+        <if test="users.login_name!='' and users.login_name!=null">
+            login_name,
+        </if>
+        <if test="users.password!='' and users.password!=null">
+            password,
+        </if>
+        <if test="users.phone!='' and users.phone!=null">
+            phone,
+        </if>
+        <if test="users.address!=null and users.address!=''">
+            address,
+        </if>
+        <if test="users.is_valid!='' and users.is_valid!=null">
+            is_valid,
+        </if>
+
+        regist_date
+
+        ) VALUES (
+        <if test="users.user_name!=null and users.user_name!=''">
+            #{users.user_name},
+        </if>
+        <if test="users.login_name!='' and users.login_name!=null">
+            #{users.login_name},
+        </if>
+        <if test="users.password!='' and users.password!=null">
+            #{users.password},
+        </if>
+        <if test="users.phone!='' and users.phone!=null">
+            #{users.phone},
+        </if>
+        <if test="users.address!=null and users.address!=''">
+            #{users.address},
+        </if>
+        <if test="users.is_valid!='' and users.is_valid!=null">
+            #{users.is_valid},
+        </if>
+
+        #{users.regist_date}
+
+        )
+    </insert>
+    <insert id="addUsers" parameterType="list">
+        INSERT sys_user (user_id, user_name, login_name, password, phone, address, is_valid, regist_date) VALUES
+        <foreach collection="usersList" item="items" separator="," index="">
+            (#{items.userId},#{items.userName},#{items.loginName},#{items.password},#{items.phone},#{items.address},#{items.isValid},#{items.registDate})
+        </foreach>
+    </insert>
+    <delete id="deleteUserById">
+        DELETE
+        FROM sys_user
+        WHERE user_id = #{users.user_id}
+        LIMIT 1
+    </delete>
+    <delete id="deleteUserByIds">
+        DELETE FROM sys_user WHERE sys_user.user_id IN
+        <foreach collection="ids" item="items" open="(" separator="," close=")">
+            #{items}
+        </foreach>
+    </delete>
+    <update id="updataUserById">
+        UPDATE sys_user
+        SET user_name=#{users.user_name},
+            login_name=#{users.login_name},
+            'password'=#{users.password},
+            phone=#{users.phone},
+            address=#{users.address},
+            is_valid=#{users.is_valid},
+            regist_date=#{users.regist_date}
+        WHERE user_id = #{users.user_id}
+    </update>
+    <update id="updataUserByIds">
+        UPDATE lh_users SET username,`password`,email,phone,type
+        WHERE id IN
+        <foreach collection="ids" item="items" open="(" separator="," close=")">
+            #{items}
+        </foreach>
+    </update>
+</mapper>

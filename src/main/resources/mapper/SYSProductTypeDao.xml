@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace对应mapper接口所在的位置-->
+<mapper namespace="com.example.springbootweb.dao.SYSProductTypeDao">
+    <resultMap id="productTypeMap" type="com.example.springbootweb.pojo.SYSProductType">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="status" property="status"/>
+    </resultMap>
+    <sql id="someNoId">
+        name, 'status'
+    </sql>
+    <sql id="selectAll">
+        SELECT id, name, status
+        FROM sys_product_type
+    </sql>
+    <insert id="addProductType">
+        INSERT INTO sys_product_type (name, status) VALUES (#{productType.name},#{productType.status})
+    </insert>
+    <update id="updateProductTypeById">
+        UPDATE sys_product_type
+        <set>
+            <if test="productType.name!=null">
+                name=#{productType.name},
+            </if>
+            <if test="productType.status!=null">
+                status=#{productType.status}
+            </if>
+        </set>
+        WHERE id=#{productType.id}
+    </update>
+    <select id="getProductTypeByName" resultMap="productTypeMap">
+        <include refid="selectAll"/>
+        WHERE name=#{productType.name}
+    </select>
+    <select id="getAllProductType" resultMap="productTypeMap">
+        <include refid="selectAll"/>
+    </select>
+
+
+</mapper>
+    

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace对应mapper接口所在的位置-->
+<mapper namespace="com.example.springbootweb.dao.SYSProductDao">
+    <resultMap id="productMap" type="com.example.springbootweb.pojo.SYSProduct">
+        <id column="product_id" property="product_id"/>
+        <result column="p_name" property="name"/>
+        <result column="product_type_id" property="product_type_id"/>
+        <result column="price" property="price"/>
+        <result column="product_image" property="product_image"/>
+        <result column="product_no" property="product_no"/>
+        <association property="productType" javaType="com.example.springbootweb.pojo.SYSProductType">
+            <id column="id" property="id"/>
+            <result column="name" property="name"/>
+            <result column="status" property="status"/>
+        </association>
+    </resultMap>
+    <sql id="all">
+        p.product_id,
+               p.name 'p_name',
+               p.price,
+               p.product_type_id,
+               p.product_image,
+               p.product_no,
+               pt.name,
+               pt.id,
+               pt.status
+    </sql>
+    <sql id="allProduct">
+        product_id,
+            product_no,
+            name,
+            price,
+            product_image,
+            product_type_id
+    </sql>
+    <sql id="allChoose">
+        <choose>
+            <when test="product.product_id!=null">
+                 p.product_id=#{product.product_id}
+            </when>
+            <when test="product.name!=null">
+                 p.name=#{ product.name}
+            </when>
+            <when test="product.price!=null">
+                 p.price=#{ product.price}
+            </when>
+            <when test="product.product_type_id!=null">
+                 p.product_type_id=#{ product.product_type_id}
+            </when>
+            <when test="product.product_image!=null">
+                 p.product_image=#{ product.product_image}
+            </when>
+            <when test="product.product_no!=null">
+                 p.product_no=#{ product.product_no}
+            </when>
+        </choose>
+    </sql>
+    <sql id="selectAll">
+        SELECT
+        <include refid="all"/>
+        FROM sys_product p
+        LEFT JOIN sys_product_type pt
+        ON p.product_type_id=pt.id
+    </sql>
+    <sql id="selectAllProduct">
+        SELECT
+        <include refid="allProduct"/>
+        FROM sys_product
+    </sql>
+    <sql id="selectAllBy">
+        <include refid="selectAll"/>
+        WHERE
+        <include refid="allChoose"/>
+    </sql>
+    <sql id="selectAllProductBy">
+        <include refid="selectAllProduct"/>
+        WHERE
+        <include refid="allChoose"/>
+    </sql>
+    <sql id="updateProductBy" >
+        UPDATE sys_product
+        <set>
+            <trim suffixOverrides=",">
+                <if test="product.product_no!=null">
+                    product_no=#{product.product_no},
+                </if>
+                <if test="product.name!=null">
+                    name=#{product.name},
+                </if>
+                <if test="product.price!=null">
+                    price=#{product.price},
+                </if>
+                <if test="product.product_image!=null">
+                    product_image=#{product.product_image},
+                </if>
+                <if test="product.product_type_id!=null">
+                    product_type_id=#{product.product_type_id},
+                </if>
+            </trim>
+        </set>
+    </sql>
+    <sql id="deleteProductBy">
+        DELETE FROM sys_product p WHERE <include refid="allChoose"/>
+    </sql>
+    <insert id="addProduct">
+        INSERT INTO sys_product
+            (product_no, name, price, product_image, product_type_id)
+        VALUES
+            (#{product.product_no},#{product.name},#{product.price},#{product.product_image},#{product.product_type_id})
+    </insert>
+    <update id="updateProductByProductId">
+       <include refid="updateProductBy"/>
+       WHERE product_id=#{product.product_id}
+    </update>
+    <delete id="deleteProductByProductId">
+       <include refid="deleteProductBy"/>
+    </delete>
+    <select id="getAllByProductId" resultMap="productMap">
+        <include refid="selectAllBy"/>
+    </select>
+    <select id="getAll" resultMap="productMap">
+        <include refid="selectAll"/>
+    </select>
+    <select id="getAllProduct" resultMap="productMap">
+        <include refid="selectAllProduct"/>
+    </select>
+    <select id="getAllProductByProductId" resultMap="productMap">
+        <include refid="selectAllProductBy"/>
+    </select>
+    <select id="getAllProductByName" resultMap="productMap">
+        <include refid="selectAllProductBy"/>
+    </select>
+    <select id="getAllByName" resultMap="productMap">
+        <include refid="selectAllBy"/>
+    </select>
+</mapper>
+    

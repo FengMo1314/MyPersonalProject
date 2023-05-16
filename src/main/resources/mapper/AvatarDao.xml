@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace对应mapper接口所在的位置-->
+<mapper namespace="com.example.springbootweb.dao.AvatarDao">
+    <sql id="selectAll">
+        SELECT * FROM lh_avatar
+    </sql>
+    <sql id="delete">
+        DELETE FROM lh_avatar
+    </sql>
+    <insert id="addAvatar">
+        INSERT INTO lh_avatar (id, uId, uName, imgUrl) VALUES (#{avatar.id},#{avatar.uId},#{avatar.uName},#{avatar.imgUrl})
+    </insert>
+    <delete id="deleteAvatarById">
+        <include refid="delete"/>
+         WHERE id=#{avatar.id}
+    </delete>
+    <delete id="deleteAvatarByUId">
+        <include refid="delete"/>
+        WHERE uId=#{avatar.uId}
+    </delete>
+    <delete id="deleteAvatarByUname">
+        <include refid="delete"/>
+        WHERE uName=#{avatar.uName}
+    </delete>
+
+    <select id="getById" resultType="com.example.springbootweb.pojo.Avatar">
+        <include refid="selectAll"/>
+        WHERE id=#{avatar.id}
+    </select>
+    <select id="gettByUId" resultType="com.example.springbootweb.pojo.Avatar">
+        <include refid="selectAll"/>
+        WHERE uId=#{avatar.uId}
+    </select>
+    <select id="gettByUName" resultType="com.example.springbootweb.pojo.Avatar">
+        <include refid="selectAll"/>
+        WHERE uName=#{avatar.uName}
+    </select>
+    <select id="gettByUrl" resultType="com.example.springbootweb.pojo.Avatar">
+        <include refid="selectAll"/>
+        WHERE imgUrl=#{avatar.imgUrl}
+    </select>
+</mapper>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace对应mapper接口所在的位置-->
+<mapper namespace="com.example.springbootweb.dao.FilesDao">
+    <sql id="all">
+        id,uId,file_name,file_path
+    </sql>
+    <sql id="someNoId">
+        uId,file_name,file_path
+    </sql>
+    <sql id="insert">
+        INSERT INTO lh_files
+        (
+        <if test="LHFiles.uId!='' and LHFiles.uId!=null">
+            uId,
+        </if>
+        <if test="LHFiles.file_name!='' and LHFiles.file_name!=null">
+            file_name,
+        </if>
+        <if test="LHFiles.file_path!='' and LHFiles.file_path!=null">
+            file_path
+        </if>
+        )
+        VALUES
+        (
+        <if test="LHFiles.uId!='' and LHFiles.uId!=null">
+            #{LHFiles.uId},
+        </if>
+        <if test="LHFiles.file_name!='' and LHFiles.file_name!=null">
+            #{LHFiles.file_name},
+        </if>
+        <if test="LHFiles.file_path!='' and LHFiles.file_path!=null">
+            #{LHFiles.file_path}
+        </if>
+        )
+    </sql>
+    <sql id="delete">
+        DELETE
+        FROM lh_files
+    </sql>
+    <sql id="update">
+        UPDATE lh_files SET
+        <if test="LHFiles.uId!='' and LHFiles.uId!=null">
+            uId=#{LHFiles.uId},
+        </if>
+        <if test="LHFiles.file_name!='' and LHFiles.file_name!=null">
+            file_name=#{LHFiles.file_name},
+        </if>
+        <if test="LHFiles.file_path!='' and LHFiles.file_path!=null">
+            file_path=#{LHFiles.file_path},
+        </if>
+    </sql>
+    <sql id="selectAll">
+        SELECT
+        <include refid="all"/>
+        FROM
+        lh_files
+    </sql>
+    <insert id="addFiles">
+        <include refid="insert"/>
+    </insert>
+    <delete id="deleteById">
+        <include refid="delete"/>
+        WHERE id=#{LHFiles.id}
+    </delete>
+    <delete id="deleteByName">
+        <include refid="delete"/>
+        WHERE file_name=#{LHFiles.file_name}
+    </delete>
+    <delete id="deleteByPath">
+        <include refid="delete"/>
+        WHERE file_path=#{LHFiles.file_path}
+    </delete>
+    <select id="getAllFiles" resultType="com.example.springbootweb.pojo.LHFiles">
+        <include refid="selectAll"/>
+    </select>
+    <select id="getSomeFilesByUId" resultType="com.example.springbootweb.pojo.LHFiles">
+        <include refid="selectAll"/>
+        WHERE uId=#{LHFiles.uId}
+    </select>
+    <select id="getFilesByName" resultType="com.example.springbootweb.pojo.LHFiles">
+        <include refid="selectAll"/>
+        WHERE file_name=#{LHFiles.file_name}
+    </select>
+    <select id="getFilesByPath" resultType="com.example.springbootweb.pojo.LHFiles">
+        <include refid="selectAll"/>
+        WHERE file_path=#{LHFiles.file_path}
+    </select>
+    <select id="getFilesById" resultType="com.example.springbootweb.pojo.LHFiles">
+        <include refid="selectAll"/>
+        WHERE id=#{LHFiles.id}
+    </select>
+</mapper>

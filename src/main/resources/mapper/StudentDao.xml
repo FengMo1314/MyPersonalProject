@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace对应mapper接口所在的位置-->
+<mapper namespace="com.example.springbootweb.dao.StudentDao">
+    <sql id="fishId">
+        ALTER TABLE `lh_student`
+            DROP `id`;
+        ALTER TABLE `lh_student`
+            ADD `id` MEDIUMINT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT FIRST;
+    </sql>
+    <sql id="someNoId">
+      stuName,stuAge,stuPhone,stuAddress
+    </sql>
+    <sql id="insert">
+        INSERT INTO lh_student (
+        <if test="student.stuName!='' and student.stuName!=null">
+            stuName,
+        </if>
+        <if test="student.stuAge!='' and student.stuAge!=null">
+            stuAge,
+        </if>
+        <if test="student.stuPhone!='' and student.stuPhone!=null">
+            stuPhone,
+        </if>
+        <if test="student.stuAddress!='' and student.stuAddress!=null">
+            stuAddress
+        </if>
+        )
+        VALUES (
+        <if test="student.stuName!='' and student.stuName!=null">
+            #{student.stuName},
+        </if>
+        <if test="student.stuAge!='' and student.stuAge!=null">
+            #{student.stuAge},
+        </if>
+        <if test="student.stuPhone!='' and student.stuPhone!=null">
+            #{student.stuPhone},
+        </if>
+        <if test="student.stuAddress!='' and student.stuAddress!=null">
+            #{student.stuAddress}
+        </if>
+        )
+    </sql>
+    <sql id="insertStudents">
+        INSERT INTO lh_student (stuName, stuAge, stuPhone, stuAddress)
+        VALUES
+                <foreach collection="studentList" item="s" separator=",">
+                    (#{s.stuName},#{s.stuAge},#{s.stuPhone},#{s.stuAddress})
+                </foreach>
+    </sql>
+    <sql id="delete">
+        DELETE FROM lh_student
+    </sql>
+    <sql id="selectAll">
+        SELECT stuName,stuAge,stuPhone,stuAddress
+        FROM lh_student
+    </sql>
+    <sql id="update">
+        UPDATE lh_student
+        SET stuName=#{student.stuName},
+            stuAge=#{student.stuAge},
+            stuPhone=#{student.stuPhone},
+            stuAddress=#{student.stuAddress}
+    </sql>
+    <sql id="updateStudents">
+        UPDATE lh_student
+        SET stuName=
+        <foreach collection="ids" item="item" index="index"
+                 separator=" " open="case ID" close="end">
+            when #{item.id} then #{item.stuName}
+        </foreach>,
+        stuAge=
+        <foreach collection="ids" item="item" index="index"
+                 separator=" " open="case ID" close="end">
+            when #{item.id} then #{item.stuAge}
+        </foreach>,
+        stuPhone =
+        <foreach collection="ids" item="item" index="index"
+                 separator=" " open="case ID" close="end">
+            when #{item.id} then #{item.stuPhone}
+        </foreach>,
+        stuAddress =
+        <foreach collection="ids" item="item" index="index"
+                 separator=" " open="case ID" close="end">
+            when #{item.id} then #{item.stuAddress}
+        </foreach>
+        WHERE id IN
+        <foreach collection="ids" index="index" item="item"
+                 separator="," open="(" close=")">
+            #{item.id}
+        </foreach>
+    </sql>
+    <insert id="addStudent">
+        <include refid="insert"/>
+    </insert>
+    <insert id="addStudents">
+        <include refid="insertStudents"/>
+    </insert>
+    <update id="updataStudentById">
+       <include refid="update"/>
+        WHERE id=#{student.id}
+    </update>
+    <update id="updataStudentByIds">
+        <include refid="updateStudents"/>
+    </update>
+    <delete id="deleteStudentById">
+        <include refid="delete"/>
+        WHERE id=#{student.id}
+        LIMIT 1
+    </delete>
+    <delete id="deleteStudentByIds">
+        <include refid="delete"/>
+        WHERE id
+        IN
+            <foreach collection="ids" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+    </delete>
+    <select id="fishUsersId">
+        <include refid="fishId"/>
+    </select>
+    <select id="getAllStudent" resultType="com.example.springbootweb.pojo.Student">
+        <include refid="selectAll"/>
+    </select>
+    <select id="getStudentByStuName" resultType="com.example.springbootweb.pojo.Student">
+        <include refid="selectAll"/>
+        WHERE stuName=#{student.stuName}
+    </select>
+    <select id="getStudentByStuId" resultType="com.example.springbootweb.pojo.Student">
+        <include refid="selectAll"/>
+        WHERE id=#{student.id}
+    </select>
+
+
+</mapper>
+    

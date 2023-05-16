@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace对应mapper接口所在的位置-->
+<mapper namespace="com.example.springbootweb.dao.TokensDao">
+    <sql id="all">
+        id,uId,token,creation_time,end_time,'active'
+    </sql>
+    <sql id="someNoId">
+        uId,token,creation_time,end_time,'active'
+    </sql>
+    <sql id="someCantNull">
+        uId,token,'active'
+    </sql>
+    <sql id="selectAll">
+        SELECT
+        <include refid="all"/>
+        FROM lh_tokens
+    </sql>
+    <insert id="addTokens">
+        INSERT INTO lh_tokens (uId, token, creation_time, end_time, `active`)
+        VALUES (#{tokens.uId}, #{tokens.token}, #{tokens.creation_time}, #{tokens.end_time}, #{tokens.active})
+    </insert>
+    <update id="updataTokensById">
+        UPDATE lh_tokens
+        SET uId=#{tokens.uId},
+            token=#{tokens.token},
+            creation_time=#{tokens.creation_time},
+            end_time=#{tokens.end_time},
+            active=#{tokens.active}
+        WHERE id = #{tokens.id}
+    </update>
+    <delete id="deleteTokensByUsersId">
+        DELETE
+        FROM lh_tokens
+        WHERE uId = #{tokens.uId}
+    </delete>
+
+    <select id="getAllTokens" resultType="com.example.springbootweb.pojo.Tokens">
+        <include refid="selectAll"/>
+    </select>
+    <select id="getTokensByUsersId" resultType="com.example.springbootweb.pojo.Tokens">
+        <include refid="selectAll"/>
+        WHERE uId=#{tokens.id}
+    </select>
+    <select id="getTokensByToken" resultType="com.example.springbootweb.pojo.Tokens">
+        <!--        <include refid="selectAll"/>-->
+        SELECT * FROM lh_tokens
+        WHERE token=#{tokens.token}
+    </select>
+    <select id="getTokensByUsersIds" resultType="com.example.springbootweb.pojo.Tokens">
+
+    </select>
+</mapper>
