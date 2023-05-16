@@ -1,7 +1,7 @@
 server:
   servlet:
     context-path: /lh.com
-  port: 8088
+  port: 8086
 spring:
   profiles:
     include: jdbc,mybatis
