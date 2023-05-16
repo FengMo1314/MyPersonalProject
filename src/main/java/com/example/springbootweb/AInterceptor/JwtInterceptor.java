@@ -29,7 +29,7 @@ public class JwtInterceptor implements HandlerInterceptor {
     public TokensService tokensService;
 
     /**
-     * 统一处理不符合眼界要求的信息
+     * 统一处理不符合要求的信息
      *
      * @param response 响应——
      * @param result   给客户端的响应结果值
