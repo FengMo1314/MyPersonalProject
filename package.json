@@ -9,8 +9,6 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
-    "@popperjs/core": "^2.11.7",
-    "@rollup/plugin-alias": "^5.0.0",
     "@vueuse/core": "^10.1.2",
     "axios": "^1.4.0",
     "core-js": "^3.6.4",
