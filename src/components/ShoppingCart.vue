@@ -60,7 +60,7 @@
   import { useRoute } from 'vue-router'
   import { InfoFilled, Shop } from '@element-plus/icons-vue'
   const state=reactive({
-    shopsList:[]
+    shopsList:<any>[]
   })
 //首先在setup中定义
 const route = useRoute()

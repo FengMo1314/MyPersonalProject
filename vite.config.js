@@ -50,8 +50,8 @@ export default defineConfig({
     // 跨域代理配置
     proxy: {
       '/api': {
-        // target: 'http://8.130.22.229:8086/lh.com/',
-        target:'http://localhost:8086/lh.com',
+        target: 'http://8.130.22.229:8086/lh.com/',
+        // target:'http://localhost:8086/lh.com',
         changeOrigin: true,
         rewrite: (path) => {
           console.log(path);
